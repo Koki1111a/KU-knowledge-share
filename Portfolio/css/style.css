@@ -1,0 +1,19 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-image: url('../images/background.jpg'); /* 背景画像の読み込み */
+  background-size: cover; /* ウィンドウ全体を覆うように背景画像を拡大縮小（アスペクト比は維持） */
+  background-repeat: no-repeat; /* 背景画像を繰り返さず、1回だけ表示する */
+  background-position: center; /* 背景画像を縦横ともに中央に配置する */
+  background-attachment: fixed;  /* スクロールしても背景が固定される */
+}
+
+canvas {
+  width: 100vw;
+  height: 100vh;
+}
