@@ -1,19 +1,74 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
 body {
-  background-image: url('../images/background.jpg'); /* 背景画像の読み込み */
-  background-size: cover; /* ウィンドウ全体を覆うように背景画像を拡大縮小（アスペクト比は維持） */
-  background-repeat: no-repeat; /* 背景画像を繰り返さず、1回だけ表示する */
-  background-position: center; /* 背景画像を縦横ともに中央に配置する */
-  background-attachment: fixed;  /* スクロールしても背景が固定される */
+  margin: 0;
+  font-family: sans-serif;
 }
 
-canvas {
-  width: 100vw;
-  height: 100vh;
+header {
+  position: sticky;
+  top: 0;
+  background-color:rgba(24, 17, 151, 0.3);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 999;
+}
+
+.logo img {
+  height: 40px;
+  opacity: 
+}
+
+/* ナビゲーション全体を左右に分ける */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  margin-left: 20px; /* ロゴとの間に少し余白 */
+}
+
+/* 左側リンク（Top, About, News） */
+.nav-left a {
+  color: white;
+  text-decoration: none;
+  margin-right: 50px;
+  font-weight: bold;
+}
+
+/* 右側（Contact） */
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* 共通 hover 効果 */
+.nav-left a:hover,
+.nav-right a:hover {
+  text-decoration: underline;
+}
+
+
+.hero {
+  background-image: url("../images/home_picture.png");
+  background-size: cover;        /* 画面にぴったり拡大 */
+  background-position: center;   /* 中央に配置 */
+  background-repeat: no-repeat;  /* 繰り返さない */
+  height: 100vh;                 /* 画面の高さすべて */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+  margin-top: -80px;
+}
+
+/* テキストを少し目立たせる */
+.hero-text {
+  background-color: rgba(0, 0, 0, 0.4);  /* 半透明の黒背景 */
+  padding: 20px 40px;
+  border-radius: 10px;
 }

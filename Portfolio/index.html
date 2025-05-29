@@ -1,16 +1,34 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
-  <title>Uncle’s Hide-and-Seek</title>
+  <title>固定ヘッダー例</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/style.css"> <!-- 外部CSSを読み込む -->
 </head>
-
 <body>
-  hello, world!!
-  <canvas id="maskCanvas"></canvas>
-  <script src="./js/mask-canvas.js"></script>
-</body>
 
+  <header>
+    <div class="logo">
+      <img src="./images/logo.png",alt="MySiteロゴ">
+    </div>
+    <nav class="nav-links">
+      <div class="nav-left">
+        <a href="#home">Top</a>
+        <a href="#about">About</a>
+        <a href="#news">News</a>
+      </div>
+      <div class="nav-right">
+        <a href="contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Welcome to Our Site</h1>
+      <p>これは背景画像の上に乗っているテキストです</p>
+    </div>
+  </section>
+
+</body>
 </html>
