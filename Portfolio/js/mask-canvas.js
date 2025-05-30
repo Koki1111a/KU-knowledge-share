@@ -1,18 +1,17 @@
 const images = [
   'https://kyoto-sakura.net/img/ujigawa-haryu15.jpg',
-  './images/hero-autumn.jpg'
+  // '../images/hero-sumemr.jpg',
+  '../images/hero-autumn.jpg',
+  '../images/hero-winnter.jpg'
 ];
 
 let current = 0;
 const heroSection = document.getElementById('hero-section');
 
-function changeBackground() {
-  heroSection.style.backgroundImage = `url(${images[current]})`;
-  current = (current + 1) % images.length;
-}
-
 // 初期表示
-changeBackground();
+heroSection.style.backgroundImage = `url(${images[current]})`;
 
-// 5秒ごとに変更
-setInterval(changeBackground, 5000);
+setInterval(() => {
+  current = (current + 1) % images.length;
+  heroSection.style.backgroundImage = `url(${images[current]})`;
+}, 5000); // 5000ms = 5秒ごとに切り替え
