@@ -1,8 +1,8 @@
 const images = [
   'https://kyoto-sakura.net/img/ujigawa-haryu15.jpg',
   // '../images/hero-sumemr.jpg',
-  '../images/hero-autumn.jpg',
-  '../images/hero-winnter.jpg'
+  './images/hero-autumn.jpg',
+  './images/hero-winter.jpg'
 ];
 
 let current = 0;
