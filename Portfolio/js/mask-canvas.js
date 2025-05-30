@@ -1,66 +1,18 @@
-const canvas = document.getElementById('maskCanvas');
-const ctx = canvas.getContext('2d');
+const images = [
+  'https://kyoto-sakura.net/img/ujigawa-haryu15.jpg',
+  './images/hero-autumn.jpg'
+];
 
-function setupContext() {
-  ctx.globalCompositeOperation = 'destination-out';
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.lineWidth = 80;
-  ctx.strokeStyle = 'rgba(0,0,0,1)';
+let current = 0;
+const heroSection = document.getElementById('hero-section');
+
+function changeBackground() {
+  heroSection.style.backgroundImage = `url(${images[current]})`;
+  current = (current + 1) % images.length;
 }
 
-function resizeCanvas() {
-  // 保存するために一時画像データを取得
-  const savedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+// 初期表示
+changeBackground();
 
-  canvas.width = document.documentElement.clientWidth;
-  canvas.height = document.documentElement.clientHeight;
-
-  // 初期化（白塗り）
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // 設定を再適用
-  setupContext();
-
-  // 描画内容の復元（必要な場合のみ）
-  // ctx.putImageData(savedImage, 0, 0); // サイズ変わってたらズレるので注意
-}
-
-window.addEventListener('resize', resizeCanvas);
-
-canvas.width = document.documentElement.clientWidth;
-canvas.height = document.documentElement.clientHeight;
-ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-setupContext();
-
-let drawing = false;
-let lastX = null;
-let lastY = null;
-
-document.addEventListener('mousedown', (e) => {
-  drawing = true;
-  lastX = e.clientX;
-  lastY = e.clientY;
-});
-
-document.addEventListener('mouseup', () => {
-  drawing = false;
-  lastX = null;
-  lastY = null;
-});
-
-document.addEventListener('mousemove', (e) => {
-  if (!drawing) return;
-  const x = e.clientX;
-  const y = e.clientY;
-
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
-  lastX = x;
-  lastY = y;
-});
+// 5秒ごとに変更
+setInterval(changeBackground, 5000);

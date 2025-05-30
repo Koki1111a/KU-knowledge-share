@@ -51,24 +51,23 @@ header {
 
 
 .hero {
-  background-image: url("../images/home_picture.png");
-  background-size: cover;        /* 画面にぴったり拡大 */
-  background-position: center;   /* 中央に配置 */
-  background-repeat: no-repeat;  /* 繰り返さない */
-  height: 100vh;                 /* 画面の高さすべて */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
   position: relative;
+  transition: background-image 1s ease-in-out;
   z-index: 1;
-  margin-top: -80px;
+  margin-top: -70px;
 }
 
-/* テキストを少し目立たせる */
 .hero-text {
-  background-color: rgba(0, 0, 0, 0.4);  /* 半透明の黒背景 */
+  background-color: rgba(0, 0, 0, 0.4);
   padding: 20px 40px;
   border-radius: 10px;
 }
