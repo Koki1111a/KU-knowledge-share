@@ -5,33 +5,35 @@
   <title>KU_knowledge_share_Home Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/style.css"> <!-- 外部CSSを読み込む -->
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
 </head>
 <body>
-
-  <header>
-    <div class="logo">
-      <img src="./images/logo.png" alt="MySiteロゴ">
-    </div>
-    <nav class="nav-links">
-      <div class="nav-left">
-        <a href="#home">Top</a>
-        <a href="#about">About</a>
-        <a href="#news">News</a>
+  <div class="main-content">
+    <header>
+      <div class="logo">
+        <img src="./images/logo.png" alt="MySiteロゴ">
       </div>
-      <div class="nav-right">
-        <a href="#contact">Contact</a>
+      <nav class="nav-links">
+        <div class="nav-left">
+          <a href="#home">Top</a>
+          <a href="#about">About</a>
+          <a href="#news">News</a>
+        </div>
+        <div class="nav-right">
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero" id="hero-section">
+      <div class="hero-text">
+        <h1>Welcome to Our Site</h1>
+        <p>これは背景画像の上に乗っているテキストです</p>
       </div>
-    </nav>
-  </header>
+    </section>
+  </div> <!-- ← ここでmain-contentを閉じる -->
 
-  <section class="hero" id="hero-section">
-    <div class="hero-text">
-      <h1>Welcome to Our Site</h1>
-      <p>これは背景画像の上に乗っているテキストです</p>
-    </div>
-  </section>
-
-  <!-- JavaScriptは一番最後に読み込む -->
-  <script src="./js/mask-canvas.js"></script>
+  <!-- JavaScriptはbodyの一番最後で読み込む -->
+  <script src="./js/mask-canvas.js" defer></script>
 </body>
 </html>

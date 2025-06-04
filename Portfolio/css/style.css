@@ -3,10 +3,14 @@ body {
   font-family: sans-serif;
 }
 
+.main-content {
+  opacity: 0;
+  transition: opacity 3s ease;
+}
 header {
   position: sticky;
   top: 0;
-  background-color:rgba(24, 17, 151, 0.3);
+  background-color:rgba(0, 32, 91, 0.3);
   color: white;
   padding: 10px 20px;
   display: flex;
@@ -17,7 +21,6 @@ header {
 
 .logo img {
   height: 40px;
-  opacity: 
 }
 
 /* ナビゲーション全体を左右に分ける */
@@ -70,4 +73,50 @@ header {
   background-color: rgba(0, 0, 0, 0.4);
   padding: 20px 40px;
   border-radius: 10px;
+}
+
+
+/*画面切り替えのエフェクト*/
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.pace.pace-active {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background-color: #719de4;
+}
+
+.pace.pace-inactive .pace-progress {
+	opacity: 0;
+	transition: opacity 0s ease;
+}
+
+.pace .pace-progress {
+	position: fixed;
+	z-index: 2000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pace .pace-progress:after {
+	display: block;
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	content: attr(data-progress-text);
+	font-family: "Helvetica Neue", sans-serif;
+	font-weight: bold;
+	font-size: 5rem;
+	line-height: 1;
+	text-align: center;
+	color: #99daf6;
 }
