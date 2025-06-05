@@ -7,6 +7,13 @@ body {
   opacity: 0;
   transition: opacity 3s ease;
 }
+
+body.loading {
+  overflow: hidden;
+  height: 100vh;
+}
+
+
 header {
   position: sticky;
   top: 0;
@@ -119,4 +126,42 @@ header {
 	line-height: 1;
 	text-align: center;
 	color: #99daf6;
+}
+
+
+/*About section*/
+/* .about-section {
+  padding: 60px 20px;
+  background-color: #f0f8ff;
+  text-align: center;
+  opacity: 1; /*後で０に修正
+  transform: translateY(0px);
+  transition: opacity 1s ease, transform 1s ease;
+} */
+.about-section {
+  padding: 60px 20px;
+  background-color: #f0f8ff;
+  text-align: center;
+  opacity: 0; /*後で０に修正*/
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.about-section h2 {
+  font-size: 2em;
+  margin-bottom: 30px;
+  color: #00205b;
+}
+
+.about-section p {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #333;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
