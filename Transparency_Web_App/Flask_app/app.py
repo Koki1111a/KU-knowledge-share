@@ -36,6 +36,7 @@ def upload():
 
     # 画像変換処理
     success = pdf2image(input_path=input_path, output_path=zip_path)
+    # print(success)
 
     # 元PDFを削除
     if os.path.exists(input_path):
@@ -80,31 +81,27 @@ def pdf2image(input_path, output_path):
         os.makedirs(img_dir, exist_ok=True)
 
         doc = fitz.open(input_path)
-        images = []
+        image_count = 0
 
-        for page in range(len(doc)):
-            images.append(doc[page].get_images())
+        for page_index in range(len(doc)):
+            page = doc[page_index]
+            image_list = page.get_images(full=True)
 
-        for pageNo, image in enumerate(images):
-            if image != []:
-                for i in range(len(image)):
-                    xref = image[i][0]
-                    smask = image[i][1]
-                    if image[i][8] == 'FlateDecode':
-                        ext = 'png'
-                    elif image[i][8] == 'DCTDecode':
-                        ext = 'jpeg'
-                    else:
-                        ext = 'bin'
+            for img_index, img in enumerate(image_list):
+                xref = img[0]
+                base_image = doc.extract_image(xref)
+                image_bytes = base_image["image"]
+                image_ext = base_image["ext"]
+                image_path = os.path.join(img_dir, f"page{page_index+1}_{img_index+1}.{image_ext}")
 
-                    pix = fitz.Pixmap(doc.extract_image(xref)["image"])
-                    if smask > 0:
-                        mask = fitz.Pixmap(doc.extract_image(smask)["image"])
-                        pix = fitz.Pixmap(pix, 0)
-                        pix = fitz.Pixmap(pix, mask)
-
-                    img_name = os.path.join(img_dir, f'image{pageNo+1}_{i+1}.{ext}')
-                    pix.save(img_name)
+                with open(image_path, "wb") as img_file:
+                    img_file.write(image_bytes)
+                    image_count += 1
+        # print(image_count) やっぱり 3あるな
+        # 画像が1つもなければ終了
+        if image_count == 0:
+            shutil.rmtree(img_dir)
+            return False
 
         with zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, _, files in os.walk(img_dir):
@@ -112,14 +109,13 @@ def pdf2image(input_path, output_path):
                     full_path = os.path.join(root, file)
                     arcname = os.path.relpath(full_path, start=img_dir)
                     zipf.write(full_path, arcname)
-
-        if os.path.exists(img_dir):
-            shutil.rmtree(img_dir)
-
+        
+        # shutil.rmtree(img_dir)
         return True
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"[画像抽出エラー] {e}")
         return False
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
