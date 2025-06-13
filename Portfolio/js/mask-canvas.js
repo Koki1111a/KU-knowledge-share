@@ -70,3 +70,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+/* card-section */
+window.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('track');
+  const slider = document.querySelector('.slider');
+
+  if (!track || !slider) return;
+
+  // 内容複製でループ風
+  track.innerHTML += track.innerHTML;
+
+  let scrollAmount = 0;
+  let animationId = null;
+  let isPaused = false;
+
+  function autoScroll() {
+    if (!isPaused) {
+      scrollAmount += 1;
+      slider.scrollLeft = scrollAmount;
+
+      if (scrollAmount >= track.scrollWidth / 2) {
+        scrollAmount = 0;
+      }
+    }
+    animationId = requestAnimationFrame(autoScroll);
+  }
+
+  // 初回実行
+  autoScroll();
+
+  // ホバー時に一時停止／再開
+  track.addEventListener('mouseover', () => {
+    isPaused = true;
+  });
+
+  track.addEventListener('mouseout', () => {
+    isPaused = false;
+  });
+});
+

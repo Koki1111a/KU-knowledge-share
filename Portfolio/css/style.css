@@ -139,19 +139,69 @@ header {
   transition: opacity 1s ease, transform 1s ease;
 } */
 .about-section {
+  display: flex;
+  justify-content: flex-end;
   padding: 60px 20px;
   background-color: #f0f8ff;
-  text-align: center;
-  opacity: 0; /*後で０に修正*/
+  opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
 }
 
-.about-section h2 {
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-card {
+  background-color: white;
+  padding: 30px;
+  margin-right: 5%;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.about-card h2 {
   font-size: 2em;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #00205b;
 }
+
+.about-card p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #333;
+}
+
+.underline {
+  position: relative;
+  display: inline-block;
+  font-size: 2em;
+  color: #00205b;
+  padding-bottom: 10px;
+}
+
+.underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(to right, #00c6ff, #0072ff); /* グラデーション色 */
+  transform: scaleX(0); /* 初期は見えない */
+  transform-origin: left;
+  transition: transform 0.6s ease-out;
+  border-radius: 2px;
+}
+
+/* スクロールで可視化されたとき */
+.underline.visible::after {
+  transform: scaleX(1); /* アニメーションで下線が表示される */
+}
+
 
 .about-section p {
   max-width: 800px;
@@ -164,4 +214,63 @@ header {
 .about-section.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/*work section*/
+.work-section {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.work-section h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.work-section p {
+  font-size: 1.1em;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.slider {
+  overflow-x: hidden;
+  width: 100%;
+  border-top: 3px solid #ccc;
+  border-bottom: 3px solid #ccc;
+}
+
+.slider-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  padding: 10px 0;
+}
+.card {
+  flex: 0 0 auto;
+  width: 480px;
+  height: 270px;
+  margin: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1); /* 半透明 */
+  backdrop-filter: blur(10px);          /* 背景ぼかし */
+  -webkit-backdrop-filter: blur(10px);  /* Safari対応 */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  color: rgba(0, 32, 91, 0.3);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.07);
+}
+
+.card-link{
+  text-decoration:none;
 }
