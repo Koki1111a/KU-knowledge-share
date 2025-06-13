@@ -27,7 +27,7 @@ header {
 }
 
 .logo img {
-  height: 40px;
+  height: 60px;
 }
 
 /* ナビゲーション全体を左右に分ける */
@@ -140,12 +140,15 @@ header {
 } */
 .about-section {
   display: flex;
-  justify-content: flex-end;
-  padding: 60px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 60px 5px;
   background-color: #f0f8ff;
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
+  width: 100%;
 }
 
 .about-section.visible {
@@ -153,14 +156,26 @@ header {
   transform: translateY(0);
 }
 
+.about-logo {
+  flex: 1 1 500px;
+  max-width: 500px;
+}
+
+.about-logo img {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .about-card {
+  flex: 1 1 700px;
   background-color: white;
   padding: 30px;
-  margin-right: 5%;
-  max-width: 600px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: left;
+  max-width: 700px;
 }
 
 .about-card h2 {
