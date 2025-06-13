@@ -33,7 +33,7 @@ def summarize_for_tiktok(title: str, summary: str) -> str:
 
 # 🔽 テスト用（fetch_newsと連携する場合）
 if __name__ == "__main__":
-    from fetch_news import fetch_latest_news
+    from fetch_tips import fetch_latest_news
 
     news = fetch_latest_news("国際")
     print("📰 タイトル:", news["title"])
