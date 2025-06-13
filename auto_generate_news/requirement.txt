@@ -1,0 +1,5 @@
+feedparser==6.0.11
+openai==1.84.0
+python-dotenv==0.21.0
+pillow==10.4.0
+moviepy==1.0.3
