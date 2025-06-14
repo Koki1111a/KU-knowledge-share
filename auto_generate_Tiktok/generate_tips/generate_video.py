@@ -35,16 +35,17 @@ def create_text_overlay_image(title, summary, output="text_overlay.png"):
     draw = ImageDraw.Draw(img)
 
     font_title = ImageFont.truetype("C:/Users/as129/Desktop/KU-knowledge-share/auto_generate_Tiktok/fonts/Fredoka-Regular.ttf", 80)
-    font_summary = ImageFont.truetype("C:/Windows/Fonts/meiryo.ttc", 40)
+    font_summary = ImageFont.truetype("C:/Windows/Fonts/meiryo.ttc", 50)
+    font_summary_t = ImageFont.truetype("C:/Windows/Fonts/meiryo.ttc", 70)
     font_date = ImageFont.truetype("C:/Windows/Fonts/arial.ttf", 48)
 
     # テキスト描画
     text_color = (255, 255, 255)  # 白色
 
     y = 600
-    draw.text((120, y), "■ " + title, font=font_summary, fill=text_color)  # x座標を120に変更
-    y += 140
-    draw_multiline_text_with_padding(draw, summary, font_summary, x=140, y=y, line_width=28, line_spacing=12)  # x座標を140に変更
+    draw.text((205, y), "■ " + title, font=font_summary_t, fill=text_color)  # x座標を0に変更
+    y += 170
+    draw_multiline_text_with_padding(draw, summary, font_summary, x=205, y=y, line_width=13, line_spacing=12)  # x座標を30に変更
 
     img.save(output)
     print("✅ テキスト画像作成:", output)
@@ -56,14 +57,10 @@ def overlay_text_on_video(base_video="Foods_tips.mp4", text_image="text_overlay.
 
     text_overlay = (
         ImageClip(text_image)
-        .set_duration(video.duration - 1)
-        .set_start(1)
+        .set_duration(video.duration - 8)  # 6秒以降から最後まで表示
+        .set_start(8)                      # 開始を6秒後に設定
         .set_position(("center", "top"))
     )
-
-
-    # ✅ フェードイン（6秒間） ← fadein 関数として適用
-    text_overlay = fadein(text_overlay, duration=6)
 
     final = CompositeVideoClip([video, text_overlay])
     final.write_videofile(output, codec="libx264", audio=True)
@@ -78,9 +75,9 @@ if __name__ == "__main__":
     foods = [
     "金平糖", "カステラ", "天ぷら", "ボーロ", "カレーライス", "すき焼き", "ラーメン", "焼きそば",
     "おにぎり", "餅", "羊羹", "団子", "味噌", "醤油", "寿司", "天丼", "親子丼", "納豆", "たこ焼き", "お好み焼き",
-    "バームクーヘン", "ドーナツ", "プリン", "モンブラン", "エクレア", "マシュマロ", "チョコレート",
+    "バウムクーヘン", "ドーナツ", "プリン", "モンブラン", "エクレア", "マシュマロ", "チョコレート",
     "キャラメル", "ポテトチップス", "アイスクリーム", "ヨーグルト", "ピザ", "ハンバーガー",
-    "パン", "ビスケット", "スコーン", "ティラミス", "シュークリーム", "ワッフル", "ゼリー", "カップラーメン"
+    "パン", "ビスケット", "スコーン", "ティラミス", "シュークリーム", "ワッフル", "ゼリー", "カップ麺"
 ]
     num = random.randint(0, len(foods)-1)
     name = foods[num]
