@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, UserPlus } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../supabaseClient';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -9,7 +9,6 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const { register, isLoading } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,12 +25,36 @@ const Register: React.FC = () => {
       return;
     }
 
-    const success = await register(username, email, password);
-    if (success) {
-      navigate('/');
-    } else {
-      setError('Email already exists');
+    // 1. Supabase Authでユーザー登録
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    console.log('signUp result:', data, error);
+
+    if (error || !data.user) {
+      setError(error?.message || '登録に失敗しました');
+      return;
     }
+
+    // 2. profilesテーブルに追加情報を保存
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([
+        {
+          id: data.user.id, // Authのid
+          username: username,
+          // created_atは自動
+        }
+      ]);
+
+    if (profileError) {
+      setError('プロフィール情報の保存に失敗しました: ' + profileError.message);
+      return;
+    }
+
+    // 成功
+    navigate('/login');
   };
 
   return (
@@ -120,20 +143,10 @@ const Register: React.FC = () => {
 
             <button
               type="submit"
-              disabled={isLoading}
               className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
             >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Creating account...</span>
-                </>
-              ) : (
-                <>
-                  <UserPlus className="h-5 w-5" />
-                  <span>Create Account</span>
-                </>
-              )}
+              <UserPlus className="h-5 w-5" />
+              <span>Create Account</span>
             </button>
           </form>
 

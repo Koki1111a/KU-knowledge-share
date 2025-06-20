@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../supabaseClient';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -17,12 +16,17 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError('');
 
-    const success = await login(email, password);
-    if (success) {
-      navigate(redirect);
-    } else {
-      setError('Invalid email or password');
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+
+    if (error || !data.user) {
+      setError(error?.message || 'ログインに失敗しました');
+      return;
     }
+    // ログイン成功時にdashboardsへ遷移
+    navigate(redirect);
   };
 
   return (
@@ -77,20 +81,9 @@ const Login: React.FC = () => {
 
             <button
               type="submit"
-              disabled={isLoading}
               className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white py-3 px-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
             >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                <>
-                  <LogIn className="h-5 w-5" />
-                  <span>Sign In</span>
-                </>
-              )}
+              <span>Sign In</span>
             </button>
           </form>
 

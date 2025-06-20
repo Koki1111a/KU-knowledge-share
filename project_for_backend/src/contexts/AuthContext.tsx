@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, AuthContextType } from '../types';
+import { supabase } from '../supabaseClient';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -28,12 +29,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    // Supabaseのセッションからユーザー情報を取得
+    const getUser = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.getUser();
+      if (data.user) {
+        setUser({
+          id: data.user.id,
+          username: data.user.user_metadata?.name || '', // 必要に応じてprofilesから取得も可
+          email: data.user.email || '',
+          isAdmin: false,
+          createdAt: data.user.created_at,
+        });
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+
+    getUser();
+
+    // 認証状態の変化を監視
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      getUser();
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
