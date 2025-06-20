@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>クイズ対戦</title></head>
+<body>
+  <h1>クイズ対戦</h1>
+  <div id="status">接続中...</div>
+  <div id="question" style="display:none;"></div>
+  <input id="answerInput" placeholder="答えを入力" style="display:none;">
+  <button onclick="sendAnswer()" style="display:none;">送信</button>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>
