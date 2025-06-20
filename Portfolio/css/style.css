@@ -30,6 +30,15 @@ header {
   height: 60px;
 }
 
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  z-index: 1000;
+}
+
+
 /* ナビゲーション全体を左右に分ける */
 .nav-links {
   display: flex;
@@ -288,4 +297,88 @@ header {
 
 .card-link{
   text-decoration:none;
+}
+
+/* レスポンシブデザイン対応 */
+@media screen and (max-width: 1024px) {
+  .about-section {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  .about-logo {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .about-card {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .card {
+    width: 400px;
+    height: 225px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-left a,
+  .nav-right a {
+    margin: 10px 0;
+    display: block;
+  }
+
+  header {
+    /* flex-direction: column; */
+    padding: 10px;
+  }
+
+  .hero {
+    height: 80vh;
+  }
+
+  .hero-text {
+    padding: 15px 25px;
+  }
+
+  .card {
+    width: 300px;
+    height: 169px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo img {
+    height: 40px;
+  }
+
+  .about-card h2 {
+    font-size: 1.5em;
+  }
+
+  .about-card p {
+    font-size: 1em;
+  }
+
+  .card {
+    width: 250px;
+    height: 141px;
+  }
 }

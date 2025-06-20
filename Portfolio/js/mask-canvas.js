@@ -43,6 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+  });
+
+  // メインコンテンツのフェードイン
+  const mainContent = document.querySelector('.main-content');
+  mainContent.style.opacity = '1';
+}); 
+
 /*About section*/
 document.addEventListener("DOMContentLoaded", function () {
   const aboutSection = document.querySelector('.about-section');
