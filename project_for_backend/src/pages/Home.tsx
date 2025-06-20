@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+/*アイコン使用*/ 
 import { ArrowRight, Star, Shield, Download, Zap } from 'lucide-react';
+/*商品をカードみたいにコンポーネント使用*/ 
 import ProductCard from '../components/ProductCard';
+/*商品のデータ使用*/ 
 import { mockProducts } from '../data/products';
 
 const Home: React.FC = () => {
@@ -42,8 +45,8 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-8 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Why Choose DigitalGoods?
