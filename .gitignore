@@ -1,3 +1,7 @@
 /.DS_Store
 /auto_generate_Tiktok/generare_tips/.env
 /auto_generate_Tiktok/generare_news/.env
+
+/online-battle/node_modules
+/online-battle/package-lock.json
+/online-battle/package.json
