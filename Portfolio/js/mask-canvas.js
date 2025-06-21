@@ -1,66 +1,126 @@
-const canvas = document.getElementById('maskCanvas');
-const ctx = canvas.getContext('2d');
+document.addEventListener("DOMContentLoaded", function () {
+  // ローディング開始時に body に 'loading' クラスを付けて固定
+  document.body.classList.add('loading');
 
-function setupContext() {
-  ctx.globalCompositeOperation = 'destination-out';
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.lineWidth = 80;
-  ctx.strokeStyle = 'rgba(0,0,0,1)';
-}
+  Pace.start({
+    ajax: {
+      trackMethods: ["GET", "POST"],
+    },
+    startOnPageLoad: true,
+    restartOnPushState: true,
+    minTime: 3000
+  });
 
-function resizeCanvas() {
-  // 保存するために一時画像データを取得
-  const savedImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  // ローディング完了後の処理
+  Pace.on('done', function () {
+    // スクロールロック解除
+    
 
-  canvas.width = document.documentElement.clientWidth;
-  canvas.height = document.documentElement.clientHeight;
+    // メインコンテンツをフェードイン
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) {
+      mainContent.style.opacity = "1";
+      document.body.classList.remove('loading');
+    }
 
-  // 初期化（白塗り）
-  ctx.fillStyle = 'white';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // 背景画像切り替えロジック
+    const images = [
+      './images/hero-autumn.jpg',
+      'https://kyoto-sakura.net/img/ujigawa-haryu15.jpg',
+      './images/hero-winter.jpg'
+    ];
+    let current = 0;
+    const heroSection = document.getElementById('hero-section');
+    if (heroSection) {
+      heroSection.style.backgroundImage = `url(${images[current]})`;
 
-  // 設定を再適用
-  setupContext();
-
-  // 描画内容の復元（必要な場合のみ）
-  // ctx.putImageData(savedImage, 0, 0); // サイズ変わってたらズレるので注意
-}
-
-window.addEventListener('resize', resizeCanvas);
-
-canvas.width = document.documentElement.clientWidth;
-canvas.height = document.documentElement.clientHeight;
-ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-setupContext();
-
-let drawing = false;
-let lastX = null;
-let lastY = null;
-
-document.addEventListener('mousedown', (e) => {
-  drawing = true;
-  lastX = e.clientX;
-  lastY = e.clientY;
+      setInterval(() => {
+        current = (current + 1) % images.length;
+        heroSection.style.backgroundImage = `url(${images[current]})`;
+      }, 4000);
+    }
+  });
 });
 
-document.addEventListener('mouseup', () => {
-  drawing = false;
-  lastX = null;
-  lastY = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelector('.nav-links');
+
+  hamburger.addEventListener('click', function() {
+    navLinks.classList.toggle('active');
+  });
+
+  // メインコンテンツのフェードイン
+  const mainContent = document.querySelector('.main-content');
+  mainContent.style.opacity = '1';
+}); 
+
+/*About section*/
+document.addEventListener("DOMContentLoaded", function () {
+  const aboutSection = document.querySelector('.about-section');
+
+  window.addEventListener('scroll', () => {
+    const rect = aboutSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    if (rect.top <= windowHeight * 0.8) {
+      aboutSection.classList.add('visible');
+    }
+  });
 });
 
-document.addEventListener('mousemove', (e) => {
-  if (!drawing) return;
-  const x = e.clientX;
-  const y = e.clientY;
+/*About section underline */
+document.addEventListener("DOMContentLoaded", function () {
+  const target = document.querySelector('.underline');
 
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
+  window.addEventListener('scroll', () => {
+    const rect = target.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
 
-  lastX = x;
-  lastY = y;
+    if (rect.top <= windowHeight * 0.8) {
+      target.classList.add('visible');
+    }
+  });
 });
+
+
+/* card-section */
+window.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('track');
+  const slider = document.querySelector('.slider');
+
+  if (!track || !slider) return;
+
+  // 内容複製でループ風
+  track.innerHTML += track.innerHTML;
+
+  let scrollAmount = 0;
+  let animationId = null;
+  let isPaused = false;
+
+  function autoScroll() {
+    if (!isPaused) {
+      scrollAmount += 1;
+      slider.scrollLeft = scrollAmount;
+
+      if (scrollAmount >= track.scrollWidth / 2) {
+        scrollAmount = 0;
+      }
+    }
+    animationId = requestAnimationFrame(autoScroll);
+  }
+
+  // 初回実行
+  autoScroll();
+
+  // ホバー時に一時停止／再開
+  track.addEventListener('mouseover', () => {
+    isPaused = true;
+  });
+
+  track.addEventListener('mouseout', () => {
+    isPaused = false;
+  });
+});
+

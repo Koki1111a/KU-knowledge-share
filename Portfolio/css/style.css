@@ -1,19 +1,384 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
 body {
-  background-image: url('../images/background.jpg'); /* 背景画像の読み込み */
-  background-size: cover; /* ウィンドウ全体を覆うように背景画像を拡大縮小（アスペクト比は維持） */
-  background-repeat: no-repeat; /* 背景画像を繰り返さず、1回だけ表示する */
-  background-position: center; /* 背景画像を縦横ともに中央に配置する */
-  background-attachment: fixed;  /* スクロールしても背景が固定される */
+  margin: 0;
+  font-family: sans-serif;
 }
 
-canvas {
-  width: 100vw;
+.main-content {
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+
+body.loading {
+  overflow: hidden;
   height: 100vh;
+}
+
+
+header {
+  position: sticky;
+  top: 0;
+  background-color:rgba(0, 32, 91, 0.3);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 999;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.hamburger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  z-index: 1000;
+}
+
+
+/* ナビゲーション全体を左右に分ける */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  margin-left: 20px; /* ロゴとの間に少し余白 */
+}
+
+/* 左側リンク（Top, About, News） */
+.nav-left a {
+  color: white;
+  text-decoration: none;
+  margin-right: 50px;
+  font-weight: bold;
+}
+
+/* 右側（Contact） */
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* 共通 hover 効果 */
+.nav-left a:hover,
+.nav-right a:hover {
+  text-decoration: underline;
+}
+
+
+.hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  position: relative;
+  transition: background-image 1s ease-in-out;
+  z-index: 1;
+  margin-top: -70px;
+}
+
+.hero-text {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+
+/*画面切り替えのエフェクト*/
+.pace {
+	-webkit-pointer-events: none;
+	pointer-events: none;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.pace.pace-active {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background-color: #719de4;
+}
+
+.pace.pace-inactive .pace-progress {
+	opacity: 0;
+	transition: opacity 0s ease;
+}
+
+.pace .pace-progress {
+	position: fixed;
+	z-index: 2000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pace .pace-progress:after {
+	display: block;
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	content: attr(data-progress-text);
+	font-family: "Helvetica Neue", sans-serif;
+	font-weight: bold;
+	font-size: 5rem;
+	line-height: 1;
+	text-align: center;
+	color: #99daf6;
+}
+
+
+/*About section*/
+/* .about-section {
+  padding: 60px 20px;
+  background-color: #f0f8ff;
+  text-align: center;
+  opacity: 1; /*後で０に修正
+  transform: translateY(0px);
+  transition: opacity 1s ease, transform 1s ease;
+} */
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 60px 5px;
+  background-color: #f0f8ff;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+  width: 100%;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-logo {
+  flex: 1 1 500px;
+  max-width: 500px;
+}
+
+.about-logo img {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.about-card {
+  flex: 1 1 700px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  max-width: 700px;
+}
+
+.about-card h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #00205b;
+}
+
+.about-card p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #333;
+}
+
+.underline {
+  position: relative;
+  display: inline-block;
+  font-size: 2em;
+  color: #00205b;
+  padding-bottom: 10px;
+}
+
+.underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(to right, #00c6ff, #0072ff); /* グラデーション色 */
+  transform: scaleX(0); /* 初期は見えない */
+  transform-origin: left;
+  transition: transform 0.6s ease-out;
+  border-radius: 2px;
+}
+
+/* スクロールで可視化されたとき */
+.underline.visible::after {
+  transform: scaleX(1); /* アニメーションで下線が表示される */
+}
+
+
+.about-section p {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #333;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*work section*/
+.work-section {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.work-section h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.work-section p {
+  font-size: 1.1em;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.slider {
+  overflow-x: hidden;
+  width: 100%;
+  border-top: 3px solid #ccc;
+  border-bottom: 3px solid #ccc;
+}
+
+.slider-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  padding: 10px 0;
+}
+.card {
+  flex: 0 0 auto;
+  width: 480px;
+  height: 270px;
+  margin: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1); /* 半透明 */
+  backdrop-filter: blur(10px);          /* 背景ぼかし */
+  -webkit-backdrop-filter: blur(10px);  /* Safari対応 */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  color: rgba(0, 32, 91, 0.3);
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.07);
+}
+
+.card-link{
+  text-decoration:none;
+}
+
+/* レスポンシブデザイン対応 */
+@media screen and (max-width: 1024px) {
+  .about-section {
+    flex-direction: column;
+    padding: 40px 20px;
+    gap: 30px;
+  }
+
+  .about-logo {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .about-card {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .card {
+    width: 400px;
+    height: 225px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-left a,
+  .nav-right a {
+    margin: 10px 0;
+    display: block;
+  }
+
+  header {
+    /* flex-direction: column; */
+    padding: 10px;
+  }
+
+  .hero {
+    height: 80vh;
+  }
+
+  .hero-text {
+    padding: 15px 25px;
+  }
+
+  .card {
+    width: 300px;
+    height: 169px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo img {
+    height: 40px;
+  }
+
+  .about-card h2 {
+    font-size: 1.5em;
+  }
+
+  .about-card p {
+    font-size: 1em;
+  }
+
+  .card {
+    width: 250px;
+    height: 141px;
+  }
 }

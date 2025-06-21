@@ -1,16 +1,75 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
-  <title>Uncle’s Hide-and-Seek</title>
+  <title>KU_knowledge_share_Home Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/style.css"> <!-- 外部CSSを読み込む -->
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
 </head>
-
 <body>
-  hello, world!!
-  <canvas id="maskCanvas"></canvas>
-  <script src="./js/mask-canvas.js"></script>
-</body>
+  <div class="main-content">
+    <header>
+      <div class="logo">
+        <a href="#home">
+          <img src="./images/logo_noback.gif" alt="MySiteロゴ">
+        </a> 
+      </div>
+      <div class="hamburger" id="hamburger">☰</div>
+      <nav class="nav-links">
+        <div class="nav-left">
+          <a href="#home">Top</a>
+          <a href="#about">About</a>
+          <a href="#news">News</a>
+        </div>
+        <div class="nav-right">
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+    <section class="hero" id="hero-section">
+    </section>
+    <section id="about" class="about-section hidden">
+      <div class="about-logo">
+        <img src="./images/maxwell.png" alt="MySiteロゴ">
+      </div>
+      <div class="about-card">
+        <h2 class="underline">About Us</h2>
+        <p>
+          私たちは、IT関連のさまざまなポートフォリオを作成し、<br>
+          IT企業を目指す方や、書面ではなく手を動かして理解したい方をサポートする団体です。
+        </p>
+      </div>
+    </section>
 
+    <section id="work" class="work-section">
+      <h2 class="underline">Work</h2>
+      <p>過去に取り組んだポートフォリオの一部を紹介します。</p>
+
+      <div class="slider">
+        <div class="slider-track" id="track">
+          <a href="#" class="card-link">
+            <div class="card">Extraction-image.pdf</div>
+          </a>
+          <a href="#" class="card-link">
+            <div class="card">Coming soon...</div>
+          </a>
+          <a href="#" class="card-link">
+            <div class="card">Coming soon...</div>
+          </a>
+          <a href="#" class="card-link">
+            <div class="card">Coming soon...</div>
+          </a>
+          <a href="#" class="card-link">
+            <div class="card">Coming soon...</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div> <!-- ← ここでmain-contentを閉じる -->
+
+  <!-- JavaScriptはbodyの一番最後で読み込む -->
+  <script src="./js/mask-canvas.js" defer></script>
+  <script src="./js/script.js" defer></script>
+</body>
 </html>
