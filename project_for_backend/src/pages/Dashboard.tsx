@@ -1,14 +1,85 @@
-import React, { useState } from 'react';
-import { Download, Calendar, DollarSign, Package } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { Download, Calendar, DollarSign, Package, LogOut, User } from 'lucide-react';
+import { supabase } from '../supabaseClient';
 import { mockPurchases } from '../data/purchases';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('purchases');
 
+  useEffect(() => {
+    // Supabaseのセッションからユーザー情報を取得
+    const getUser = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase.auth.getUser();
+      if (data.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+
+    getUser();
+
+    // 認証状態の変化を監視
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('ログアウトエラー:', error);
+        alert('ログアウト中にエラーが発生しました');
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('ログアウトエラー:', error);
+      alert('ログアウト中にエラーが発生しました');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">ログインが必要です</h2>
+          <p className="text-gray-600 mb-6">ダッシュボードにアクセスするにはログインしてください。</p>
+          <button
+            onClick={() => window.location.href = '/login'}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            ログインページへ
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const userPurchases = mockPurchases.filter(purchase => purchase.userId === user.id);
@@ -19,13 +90,47 @@ const Dashboard: React.FC = () => {
     alert(`Download started for: ${productName}`);
   };
 
+  const getUserDisplayName = () => {
+    if (user.user_metadata?.full_name) {
+      return user.user_metadata.full_name;
+    }
+    if (user.user_metadata?.name) {
+      return user.user_metadata.name;
+    }
+    return user.email?.split('@')[0] || 'ユーザー';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header with User Info and Logout */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center space-x-4">
+            <div className="bg-purple-100 p-3 rounded-full">
+              <User className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{getUserDisplayName()}</h1>
+              <p className="text-gray-600">{user.email}</p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>ログアウト</span>
+          </button>
+        </div>
+
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white p-8 mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, {user.username}!</h1>
+          <h1 className="text-3xl font-bold mb-2">Welcome back, {getUserDisplayName()}!</h1>
           <p className="text-purple-100">Manage your purchases and downloads here.</p>
+          <div className="mt-4 text-sm text-purple-200">
+            <p>ユーザーID: {user.id}</p>
+            <p>アカウント作成日: {new Date(user.created_at).toLocaleDateString('ja-JP')}</p>
+          </div>
         </div>
 
         {/* Stats Cards */}

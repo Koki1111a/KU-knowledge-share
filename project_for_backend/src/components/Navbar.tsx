@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
             <Link to="/" className="flex items-center space-x-2">
               <Package className="h-8 w-8 text-purple-600" />
               <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                DigitalGoods
+                KU_knowledge_share
               </span>
             </Link>
           </div>
